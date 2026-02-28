@@ -1,0 +1,10 @@
+,customerID,gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines,InternetService,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,Contract,InternetCharges,MonthlyCharges,TotalCharges,Churn,churn_proba
+1713,customer_1714,Male,0,Yes,Yes,2,Yes,No,Fiber optic,Yes,Yes,No,No,No,No internet service,Month-to-month,89.74,136.05,272.1,1,0.8404514875482348
+116,customer_117,Male,0,No,Yes,3,Yes,No,Fiber optic,No internet service,Yes,No,Yes,Yes,No,Month-to-month,130.77,199.07,597.21,1,0.8218873903178892
+5054,customer_5055,Male,1,Yes,No,0,Yes,No phone service,Fiber optic,Yes,No internet service,No internet service,No internet service,No internet service,Yes,Month-to-month,123.12,196.33,0.0,1,0.8204119818875456
+601,customer_602,Male,0,No,Yes,2,Yes,No phone service,Fiber optic,Yes,Yes,No,No,No internet service,No,One year,105.26,165.89,331.78,1,0.8119824884237831
+1865,customer_1866,Male,0,Yes,No,1,Yes,No,Fiber optic,No internet service,No internet service,Yes,Yes,Yes,No,Month-to-month,106.89,181.51,181.51,1,0.8108931170673263
+2862,customer_2863,Male,0,Yes,Yes,4,Yes,No,Fiber optic,No,Yes,Yes,No,No,No internet service,Month-to-month,79.08,139.76,559.04,1,0.8032354883730458
+31,customer_32,Male,1,No,Yes,2,No,No phone service,Fiber optic,No internet service,Yes,No internet service,No,No internet service,No,One year,113.35,138.35,276.7,1,0.8032216213169816
+1409,customer_1410,Female,0,Yes,Yes,0,No,No phone service,Fiber optic,Yes,No,Yes,Yes,No internet service,No internet service,One year,78.11,128.11,0.0,1,0.801421243376338
+4181,customer_4182,Female,0,No,No,3,Yes,No,Fiber optic,No internet service,Yes,Yes,No internet service,Yes,No internet service,Month-to-month,111.8,175.11,525.33,1,0.8010405447203298

@@ -1,0 +1,11 @@
+feature,importance
+num__TotalCharges,0.16129868088792773
+num__tenure,0.14713032995298017
+num__MonthlyCharges,0.10996553462279846
+num__InternetCharges,0.07688243468484474
+num__SeniorCitizen,0.02966143936189874
+cat__Contract_Two year,0.02295560599157434
+cat__Contract_Month-to-month,0.02231913129668366
+cat__MultipleLines_No phone service,0.019749720140651978
+cat__MultipleLines_No,0.01940648595598287
+cat__gender_Female,0.01798254735993841
