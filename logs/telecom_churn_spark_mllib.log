@@ -1,0 +1,163 @@
+2026-03-01 22:56:30,764 - [INFO] - ===============================================================================================
+2026-03-01 22:56:30,768 - [INFO] -      ECF - MACHINE LEARNING SUPERVISÉ - Spark MLlib - script: telecom_churn_spark_mllib.py
+2026-03-01 22:56:30,770 - [INFO] -                       Sujet : Prédiction de Churn Client - TeleCom+
+2026-03-01 22:56:30,773 - [INFO] -                           Script : telecom_churn_spark_mllib.py
+2026-03-01 22:56:30,775 - [INFO] - ===============================================================================================
+2026-03-01 22:56:30,778 - [INFO] - *** 5a. Setup Spark ***
+2026-03-01 22:56:30,781 - [INFO] - 
+2026-03-01 22:56:30,784 - [INFO] - Initialiser SparkSession :
+2026-03-01 22:56:32,460 - [INFO] - Spark version  : 3.5.3
+2026-03-01 22:56:32,471 - [INFO] - Spark UI       : http://spark-master:4040
+2026-03-01 22:56:32,479 - [INFO] - Python version : 3.8.10
+2026-03-01 22:56:32,487 - [INFO] - Python path    : /usr/bin/python3
+2026-03-01 22:56:32,502 - [INFO] - Java version   : 11.0.24
+2026-03-01 22:56:32,515 - [INFO] - Java home      : /opt/java/openjdk
+2026-03-01 22:56:32,524 - [INFO] - Creation de la session Spark avec succès
+2026-03-01 22:56:32,533 - [INFO] - ---
+2026-03-01 22:56:32,541 - [INFO] - Charger CSV dans DataFrame Spark :
+2026-03-01 22:56:39,507 - [INFO] - Chargement avec succès du CSV dans la DataFrame Spark df
+2026-03-01 22:56:39,512 - [INFO] - ---
+2026-03-01 22:56:39,516 - [INFO] - Afficher schema et statistics :
+2026-03-01 22:56:41,014 - [INFO] -     - Lignes en entree : 7,043
+2026-03-01 22:56:41,036 - [INFO] -     - Nombre de colonnes : 20
+2026-03-01 22:56:41,041 - [INFO] -     - Schema :
+2026-03-01 22:56:41,049 - [INFO] - 
+root
+ |-- customerID: string (nullable = true)
+ |-- gender: string (nullable = true)
+ |-- SeniorCitizen: integer (nullable = true)
+ |-- Partner: string (nullable = true)
+ |-- Dependents: string (nullable = true)
+ |-- tenure: integer (nullable = true)
+ |-- PhoneService: string (nullable = true)
+ |-- MultipleLines: string (nullable = true)
+ |-- InternetService: string (nullable = true)
+ |-- OnlineSecurity: string (nullable = true)
+ |-- OnlineBackup: string (nullable = true)
+ |-- DeviceProtection: string (nullable = true)
+ |-- TechSupport: string (nullable = true)
+ |-- StreamingTV: string (nullable = true)
+ |-- StreamingMovies: string (nullable = true)
+ |-- Contract: string (nullable = true)
+ |-- InternetCharges: double (nullable = true)
+ |-- MonthlyCharges: double (nullable = true)
+ |-- TotalCharges: double (nullable = true)
+ |-- Churn: string (nullable = true)
+
+2026-03-01 22:56:41,367 - [INFO] -     - Appercu des données (df) :
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+|    | customerID   | gender   |   SeniorCitizen | Partner   | Dependents   |   tenure | PhoneService   | MultipleLines    | InternetService   | OnlineSecurity      | OnlineBackup        | DeviceProtection    | TechSupport         | StreamingTV         | StreamingMovies     | Contract       |   InternetCharges |   MonthlyCharges |   TotalCharges | Churn   |
++====+==============+==========+=================+===========+==============+==========+================+==================+===================+=====================+=====================+=====================+=====================+=====================+=====================+================+===================+==================+================+=========+
+|  0 | customer_1   | Male     |               0 | No        | Yes          |       51 | Yes            | Yes              | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | Month-to-month |              0    |            43.53 |        2220.03 | No      |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+|  1 | customer_2   | Male     |               1 | Yes       | Yes          |       14 | Yes            | Yes              | DSL               | No internet service | No internet service | Yes                 | No internet service | Yes                 | No internet service | Two year       |             46    |           109.39 |        1531.46 | No      |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+|  2 | customer_3   | Female   |               0 | Yes       | No           |       71 | No             | No               | DSL               | Yes                 | No                  | Yes                 | Yes                 | No                  | Yes                 | One year       |             34.36 |            99.36 |        7054.56 | No      |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+|  3 | customer_4   | Male     |               1 | Yes       | No           |       60 | Yes            | No phone service | Fiber optic       | No internet service | No internet service | No                  | No internet service | Yes                 | No internet service | Two year       |             65.56 |           115.12 |        6907.2  | No      |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+|  4 | customer_5   | Male     |               0 | Yes       | No           |       20 | No             | No               | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | One year       |              0    |            20    |         400    | Yes     |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+
+2026-03-01 22:56:44,068 - [INFO] -     - Statistiques :
++-------+------------+------+------------------+-------+----------+------------------+------------+-------------+---------------+--------------+------------+----------------+-----------+-----------+---------------+--------------+-----------------+-----------------+------------------+-----+
+|summary|  customerID|gender|     SeniorCitizen|Partner|Dependents|            tenure|PhoneService|MultipleLines|InternetService|OnlineSecurity|OnlineBackup|DeviceProtection|TechSupport|StreamingTV|StreamingMovies|      Contract|  InternetCharges|   MonthlyCharges|      TotalCharges|Churn|
++-------+------------+------+------------------+-------+----------+------------------+------------+-------------+---------------+--------------+------------+----------------+-----------+-----------+---------------+--------------+-----------------+-----------------+------------------+-----+
+|  count|        7043|  7043|              7043|   7043|      7043|              7043|        7043|         7043|           7043|          7043|        7043|            7043|       7043|       7043|           7043|          7043|             7043|             7043|              7043| 7043|
+|   mean|        NULL|  NULL|0.5033366463154906|   NULL|      NULL|35.902598324577596|        NULL|         NULL|           NULL|          NULL|        NULL|            NULL|       NULL|       NULL|           NULL|          NULL|46.78341189833873|91.00610961238111| 3279.987099247474| NULL|
+| stddev|        NULL|  NULL|0.5000243658947424|   NULL|      NULL|20.945972556164175|        NULL|         NULL|           NULL|          NULL|        NULL|            NULL|       NULL|       NULL|           NULL|          NULL|43.81220336753465|54.00175304201539|2976.4182081448926| NULL|
+|    min|  customer_1|Female|                 0|     No|        No|                 0|          No|           No|            DSL|            No|          No|              No|         No|         No|             No|Month-to-month|              0.0|             20.0|               0.0|   No|
+|    max|customer_999|  Male|                 1|    Yes|       Yes|                72|         Yes|          Yes|             No|           Yes|         Yes|             Yes|        Yes|        Yes|            Yes|      Two year|           139.93|           238.04|          15151.68|  Yes|
++-------+------------+------+------------------+-------+----------+------------------+------------+-------------+---------------+--------------+------------+----------------+-----------+-----------+---------------+--------------+-----------------+-----------------+------------------+-----+
+
+2026-03-01 22:56:44,074 - [INFO] - ───────────────────────────────────────────────────────────────────────────────────────────────
+2026-03-01 22:56:44,081 - [INFO] - *** 5b. Préparation Spark ***
+2026-03-01 22:56:44,088 - [INFO] - 
+2026-03-01 22:56:45,295 - [INFO] - Création de la cible 'Churn_bool' à partir de Churn (0-> No, 1->Yes) :
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|    | customerID   | gender   |   SeniorCitizen | Partner   | Dependents   |   tenure | PhoneService   | MultipleLines    | InternetService   | OnlineSecurity      | OnlineBackup        | DeviceProtection    | TechSupport         | StreamingTV         | StreamingMovies     | Contract       |   InternetCharges |   MonthlyCharges |   TotalCharges | Churn   |   Churn_bool |
++====+==============+==========+=================+===========+==============+==========+================+==================+===================+=====================+=====================+=====================+=====================+=====================+=====================+================+===================+==================+================+=========+==============+
+|  0 | customer_1   | Male     |               0 | No        | Yes          |       51 | Yes            | Yes              | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | Month-to-month |              0    |            43.53 |        2220.03 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  1 | customer_2   | Male     |               1 | Yes       | Yes          |       14 | Yes            | Yes              | DSL               | No internet service | No internet service | Yes                 | No internet service | Yes                 | No internet service | Two year       |             46    |           109.39 |        1531.46 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  2 | customer_3   | Female   |               0 | Yes       | No           |       71 | No             | No               | DSL               | Yes                 | No                  | Yes                 | Yes                 | No                  | Yes                 | One year       |             34.36 |            99.36 |        7054.56 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  3 | customer_4   | Male     |               1 | Yes       | No           |       60 | Yes            | No phone service | Fiber optic       | No internet service | No internet service | No                  | No internet service | Yes                 | No internet service | Two year       |             65.56 |           115.12 |        6907.2  | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  4 | customer_5   | Male     |               0 | Yes       | No           |       20 | No             | No               | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | One year       |              0    |            20    |         400    | Yes     |            1 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  5 | customer_6   | Female   |               0 | No        | Yes          |       23 | Yes            | No phone service | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | Month-to-month |              0    |            33.27 |         765.21 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  6 | customer_7   | Male     |               1 | Yes       | Yes          |        2 | Yes            | No               | Fiber optic       | No                  | Yes                 | Yes                 | No internet service | No internet service | No                  | One year       |             77.01 |           129.92 |         259.84 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  7 | customer_8   | Female   |               0 | No        | Yes          |       21 | Yes            | No phone service | No                | No internet service | No internet service | No internet service | No internet service | No internet service | No internet service | Two year       |              0    |            35.25 |         740.25 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  8 | customer_9   | Female   |               1 | Yes       | Yes          |       52 | No             | Yes              | DSL               | Yes                 | Yes                 | No internet service | Yes                 | No internet service | No                  | One year       |             43.86 |            88.86 |        4620.72 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+|  9 | customer_10  | Female   |               1 | Yes       | Yes          |        1 | No             | No phone service | Fiber optic       | Yes                 | No                  | No                  | Yes                 | No                  | Yes                 | Two year       |            136.31 |           191.31 |         191.31 | No      |            0 |
++----+--------------+----------+-----------------+-----------+--------------+----------+----------------+------------------+-------------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+----------------+-------------------+------------------+----------------+---------+--------------+
+2026-03-01 22:56:45,301 - [INFO] - Colonnes catégorielles : ['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract']
+2026-03-01 22:56:45,306 - [INFO] - Colonnes numériques : ['SeniorCitizen', 'tenure', 'InternetCharges', 'MonthlyCharges', 'TotalCharges']
+2026-03-01 22:56:45,312 - [INFO] - ---
+2026-03-01 22:56:45,318 - [INFO] - StringIndexer pour variables catégorielles :
+2026-03-01 22:56:45,379 - [INFO] - Creation avec succès du StringIndexer pour les variables catégorielles
+2026-03-01 22:56:45,384 - [INFO] - ---
+2026-03-01 22:56:45,390 - [INFO] - VectorAssembler pour features :
+2026-03-01 22:56:45,405 - [INFO] - Creation avec succès du VectorAssembler pour features
+2026-03-01 22:56:45,411 - [INFO] - ---
+2026-03-01 22:56:45,418 - [INFO] - StandardScaler pour normalisation :
+2026-03-01 22:56:45,432 - [INFO] - Creation avec succès du StandardScaler pour normalisation
+2026-03-01 22:56:45,437 - [INFO] - ---
+2026-03-01 22:56:45,443 - [INFO] - Creation avec succès de la pipeline du preprocessing : preprocessing = Pipeline(stages=indexers + [assembler, scaler])
+2026-03-01 22:56:45,449 - [INFO] - ───────────────────────────────────────────────────────────────────────────────────────────────
+2026-03-01 22:56:45,454 - [INFO] - *** 5c. Modélisation Spark ***
+2026-03-01 22:56:45,460 - [INFO] - 
+2026-03-01 22:56:45,465 - [INFO] - RandomForestClassifier (Spark MLlib) :
+2026-03-01 22:56:45,509 - [INFO] - Creation avec succès de la pipeline pour RandomForestClassifier : pipeline_rf = Pipeline(stages=preprocessing.getStages() + [rf]))
+2026-03-01 22:56:45,515 - [INFO] - 
+2026-03-01 22:56:45,520 - [INFO] - LogisticRegression (Spark MLlib) :
+2026-03-01 22:56:45,571 - [INFO] - Creation avec succès de la pipeline pour LogisticRegression : pipeline_lr = Pipeline(stages=preprocessing.getStages() + [lr])
+2026-03-01 22:56:45,576 - [INFO] - ---
+2026-03-01 22:56:45,599 - [INFO] - Split train/test 70/30
+2026-03-01 22:56:45,606 - [INFO] - ---
+2026-03-01 22:56:56,162 - [INFO] - Temps entraînement LogisticRegression : 10.55 s
+2026-03-01 22:56:56,166 - [INFO] - ---
+2026-03-01 22:57:03,080 - [INFO] - Temps entraînement RandomForestClassifier : 6.91 s
+2026-03-01 22:57:03,087 - [INFO] - ---
+2026-03-01 22:57:03,092 - [INFO] - Évaluer (accuracy, f1-score) :
+2026-03-01 22:57:03,098 - [INFO] - 
+2026-03-01 22:57:03,969 - [INFO] - LogisticRegression -> Accuracy : 0.8580 - F1-score : 0.7924
+2026-03-01 22:57:05,013 - [INFO] - RandomForestClassifier -> Accuracy : 0.8580 - F1-score : 0.7924
+2026-03-01 22:57:05,022 - [INFO] - 
+2026-03-01 22:57:05,027 - [INFO] - Enregistrement des metrics spark : '/output/spark/spark_metrics.json'
+2026-03-01 22:57:05,031 - [INFO] - ───────────────────────────────────────────────────────────────────────────────────────────────
+2026-03-01 22:57:05,038 - [INFO] - *** 5d. Comparaison Scikit-learn vs Spark ***
+2026-03-01 22:57:05,044 - [INFO] - 
+2026-03-01 22:57:05,051 - [INFO] - +-------------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,057 - [INFO] - |                               | Duration (sec) | Accuracy | F1-score |
+2026-03-01 22:57:05,062 - [INFO] - +-------------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,067 - [INFO] - |Logistic Regression (sklearn)  |0.036           |0.857     |0.026     |
+2026-03-01 22:57:05,072 - [INFO] - +-------------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,078 - [INFO] - |Logistic Regression (spark)    |10.553          |0.858     |0.792     |
+2026-03-01 22:57:05,084 - [INFO] - +-------------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,089 - [INFO] - +-------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,094 - [INFO] - |                         | Duration (sec) | Accuracy | F1-score |
+2026-03-01 22:57:05,100 - [INFO] - +-------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,106 - [INFO] - |Random Forest (sklearn)  |0.433           |0.849     |0.091     |
+2026-03-01 22:57:05,111 - [INFO] - +-------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,118 - [INFO] - |Random Forest (spark)    |6.910           |0.858     |0.792     |
+2026-03-01 22:57:05,124 - [INFO] - +-------------------------+----------------+----------+----------+
+2026-03-01 22:57:05,130 - [INFO] - 
+2026-03-01 22:57:05,136 - [INFO] - Logistic Regression : 
+2026-03-01 22:57:05,142 - [INFO] - => Duration : l'entrainement est plus rapide sur Scikit-learn que sur Spark
+2026-03-01 22:57:05,148 - [INFO] - => Accuracy : Il est quasiment la même sur Scikit-learn et sur Spark
+2026-03-01 22:57:05,154 - [INFO] - => F1-score : Il est plus petit sur Scikit-learn que sur Spark
+2026-03-01 22:57:05,159 - [INFO] - 
+2026-03-01 22:57:05,164 - [INFO] - Random Forest : 
+2026-03-01 22:57:05,170 - [INFO] - => Duration : l'entrainement est plus rapide sur Scikit-learn que sur Spark
+2026-03-01 22:57:05,175 - [INFO] - => Accuracy : Il est quasiment la même sur Scikit-learn et sur Spark
+2026-03-01 22:57:05,180 - [INFO] - => F1-score : Il est plus petit sur Scikit-learn que sur Spark
+2026-03-01 22:57:05,185 - [INFO] - ---
+2026-03-01 22:57:05,190 - [INFO] - Fin du traitement, le script a été exécuté avec succès
+2026-03-01 22:57:05,686 - [INFO] - La session spark a ete arretee avec succes
+2026-03-01 22:57:05,691 - [INFO] - ===============================================================================================

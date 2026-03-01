@@ -1,0 +1,12 @@
+{
+  "Logistic Regression": {
+    "time": "10.553",
+    "accuracy": "0.858",
+    "f1-score": "0.792"
+  },
+  "Random Forest": {
+    "time": "6.910",
+    "accuracy": "0.858",
+    "f1-score": "0.792"
+  }
+}
